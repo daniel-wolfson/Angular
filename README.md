@@ -1,2 +1,2 @@
-# Angular exampels
+# Angular examples
 
