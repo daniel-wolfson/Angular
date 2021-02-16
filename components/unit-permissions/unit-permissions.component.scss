@@ -1,0 +1,66 @@
+@import "../user-permissions/user-permissions.component.scss";
+
+
+::ng-deep #unitTableDiv {
+  height: 100%;
+
+  @media screen and (max-width: 1366px) {
+    /deep/.ui-table .ui-table-scrollable-body {
+      height: calc(100vh - 275px) !important;
+    }
+  }
+
+  #GlobalFilerUserInput {
+    width: auto;
+    background: black;
+    color: lightgray;
+    font-weight: bold;
+    font-family: heebo;
+  }
+
+  tr {
+    background-color: #21242b;
+    height: 32px;
+    color: lightgray !important;
+    text-align: center;
+    font-weight: bold !important;
+    font-family: heebo !important;
+    border-bottom: solid 1px rgba(117, 95, 95, 0.4);
+  }
+  td {
+    border-bottom: solid 1px gray;
+    border: none;
+    span {
+      font-weight: bold !important;
+      font-family: heebo !important;
+    }
+  }
+  th {
+    text-align: center;
+    background: #21242b !important;
+    color: lightgray !important;
+    font-weight: bold !important;
+    font-family: heebo !important;
+    border-bottom: solid 2px gray;
+    border: none;
+  }
+
+ .ui-table {
+    height: calc(100% - 70px);
+    .ui-table-tbody > tr.ui-state-highlight {
+      background-color: #007ad9 !important;
+    }
+    .ui-table-caption,
+    .ui-table-summary {
+      display: none !important;
+    }
+    // .ui-table-scrollable-wrapper,
+    // .ui-table-scrollable-view {
+    //   //height: 100%;
+    // }
+    .ui-table-scrollable-body {
+      height: 100% !important;
+      background-color: rgb(33, 36, 43);
+    }
+  }
+}

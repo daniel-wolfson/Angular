@@ -1,0 +1,266 @@
+<div [ngClass]="'page-card page-locale-' + selectedLanguage" [lang]="selectedLanguage" class="h-100">
+
+
+    <div class="page-card-header">
+        <div class="page-title">{{'UserCard.PageTitle' | translate}}</div>
+        <div class="page-btn-close" (click)="onClose()"><i class="pi pi-times"></i></div>
+    </div>
+
+    <div class="page-card-body">
+        <div class="page-row">
+            <form class="col-4" [formGroup]="userForm" autocomplete="off">
+
+                <!-- UserImg -->
+                <div class="page-inputgroup" style="display: none">
+                    <span>
+                        <img height="40px" width="150px" style="visibility: hidden;">
+                    </span>
+                    <span>
+                        <img alt="{{'Common.NoPhoto' | translate}}" class="page-avatar">
+                        <!-- 
+                                <div [ngStyle]="{ 'background-image': 'url(' + data.UserImg + ')'}" height="120px" width="150px"></div>
+                                -->
+                    </span>
+                </div>
+
+                <!-- UserType -->
+                <div class="page-row-inputgroup">
+                    <label class="col-5 page-label">{{'Common.UserType' | translate}}</label>
+                    <div class="col-7 p-0 d-flex flex-row justify-content-between" style="padding-bottom: 0">
+                        <div class="col-4 p-0 d-flex justify-content-center">
+                            <p-radioButton name="userTypeOptions" formControlName="UserType" inputId="opt3"
+                                [value]="userTypes[2].UserTypeId" [label]="userTypes[2].TypeName">
+                            </p-radioButton>
+                        </div>
+                        <div class="col-4 p-0 d-flex justify-content-center">
+                            <p-radioButton name="userTypeOptions" formControlName="UserType" inputId="opt2"
+                                [value]="userTypes[1].UserTypeId" [label]="userTypes[1].TypeName">
+                            </p-radioButton>
+                        </div>
+                        <div class="col-4 p-0 d-flex justify-content-center">
+                            <p-radioButton name="userTypeOptions" formControlName="UserType" inputId="opt1"
+                                [value]="userTypes[0].UserTypeId" [label]="userTypes[0].TypeName">
+                            </p-radioButton>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UserId -->
+                <div class="page-row-inputgroup">
+                    <label class="col-5 page-label">{{'Common.UserId' | translate}}</label>
+                    <input class="col-7 page-input" type="text" pInputText formControlName="UserId" class="form-control"
+                        [ngClass]="{ 'is-invalid': f.UserId.errors }" />
+                </div>
+
+                <!-- UserName -->
+                <div class="page-row-inputgroup">
+                    <label class="col-5 page-label">{{'Common.UserName' | translate}}</label>
+                    <input class="col-7 page-input" type="text" pInputText formControlName="UserName"
+                        class="form-control" [ngClass]="{ 'is-invalid': f.UserName.errors }" />
+                </div>
+                <div *ngIf="submitted && f.UserName.errors" class="invalid-feedback">
+                    <div *ngIf="f.UserName.errors.required">{{'Common.RequiredField' | translate}}</div>
+                </div>
+
+                <!-- UserFirstName -->
+                <div class="page-row-inputgroup">
+                    <label class="col-5 page-label">{{'Common.FirstName' | translate}}</label>
+                    <input class="col-7 page-input" type="text" pInputText formControlName="UserFirstName"
+                        class="form-control" [ngClass]="{ 'is-invalid': f.UserFirstName.errors }" />
+                </div>
+                <div *ngIf="submitted && f.UserFirstName.errors" class="invalid-feedback">
+                    <div *ngIf="f.UserFirstName.errors.required">{{'Common.RequiredField' | translate}}</div>
+                </div>
+
+                <!-- UserLastName -->
+                <div class="page-row-inputgroup">
+                    <label class="col-5 page-label">{{'Common.LastName' | translate}}</label>
+                    <input class="col-7 page-input" type="text" pInputText formControlName="UserLastName"
+                        class="form-control" [ngClass]="{ 'is-invalid': f.UserLastName.errors }" />
+                </div>
+
+                <!-- UserEmail -->
+                <div class="page-row-inputgroup">
+                    <label class="col-5 page-label">{{'Common.Email' | translate}}</label>
+                    <input class="col-7 page-input" type="text" pInputText formControlName="UserMail"
+                        class="form-control" [ngClass]="{ 'is-invalid': f.UserMail.errors }" />
+                </div>
+                <div *ngIf="submitted && f.UserMail.errors" class="invalid-feedback">
+                    <div *ngIf="f.UserMail.errors.required">{{'Common.RequiredField' | translate}}</div>
+                    <div *ngIf="f.UserMail.errors.email">{{'Common.FormatEmailRequired' | translate}}</div>
+                </div>
+
+                <!-- UserMobilePhone -->
+                <div class="page-row-inputgroup">
+                    <label class="col-5 page-label">{{'Common.Telephone' | translate}} 1</label>
+                    <input class="col-7 page-input" type="text" pInputText formControlName="UserMobilePhone"
+                        class="form-control" [ngClass]="{ 'is-invalid': f.UserMobilePhone.errors }" />
+                </div>
+                <div *ngIf="submitted && f.UserMobilePhone.errors" class="invalid-feedback">
+                    <div *ngIf="f.UserMobilePhone.errors.required">{{'Common.RequiredField' | translate}}</div>
+                </div>
+
+                <!-- UserBusinessPhone -->
+                <div class="page-row-inputgroup">
+                    <label class="col-5 page-label">{{'Common.Telephone' | translate}} 2</label>
+                    <input class="col-7 page-input" type="text" pInputText formControlName="UserBusinessPhone"
+                        class="form-control" />
+                </div>
+
+                <!-- Password -->
+                <div class="page-row-inputgroup" style="position: relative;">
+                    <label class="col-5 page-label">{{'Common.Password' | translate}}</label>
+                    <!-- (blur)="passwordLostFocus($event)" -->
+                    <input class="col-7 page-input" id="userCardPassword" #userCardPassword type="text" pInputText
+                        formControlName="Password" class="form-control page-password" autocomplete="off"
+                        [ngClass]="{ 'is-invalid': f.Password.errors }" (focus)="passwordOnFocus($event)" />
+                </div>
+                <div *ngIf="submitted && f.Password.errors" class="invalid-feedback">
+                    <div *ngIf="f.Password.errors.required">{{'Common.RequiredField' | translate}}</div>
+                </div>
+
+                <!-- UserNotes -->
+                <div class="page-row-inputgroup">
+                    <label class="col-5 page-label" for="text">{{'Common.Notes' | translate}}</label>
+                    <textarea class="col-7 page-input" id="text" pInputTextarea formControlName="UserNotes"
+                        class="form-control" [style]="{ maxHeight: '40px' }"></textarea>
+                </div>
+
+            </form>
+            <div class="col-8 d-flex flex-column h-100">
+
+                <!-- table permissions -->
+                <label class="page-label" style="height: 30px;">{{'UserCard.UserPermissions' | translate}}</label>
+
+                <div id='permissions'>
+                    <div class="h-100">
+                        <p-table #dt [columns]="rolesColumns" [value]="userRoles" [resizableColumns]="true"
+                            [scrollable]="true" scrollHeight="100px" [style.max-height.vh]="33"
+                            [style.min-height.vh]="10" [responsive]="true" selectionMode="single" dataKey="RoleId">
+
+                            <ng-template pTemplate="caption">
+                                <!-- <div class="page-search-input" style="display: none;">
+                                        <i class="fa fa-search"></i>
+                                        <input id="GlobalFilerUserInput" type="text" pInputText size="50"
+                                            placeholder=""
+                                            (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                            style="width:auto">
+                                    </div> -->
+                            </ng-template>
+
+                            <ng-template pTemplate="colgroup" let-columns>
+                                <colgroup>
+                                    <col style="width:30%"><!-- UserGuid -->
+                                    <col style="width:20%"><!-- UserName -->
+                                    <col style="width:20%"><!-- UserMail -->
+                                    <col style="width:10%"><!-- RoleName -->
+                                    <col style="width:10%"><!-- UserCreateDate-->
+                                    <col style="width:10%"><!-- UserStatus-->
+                                </colgroup>
+                            </ng-template>
+
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn>
+                                        {{col.header}}
+                                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                            ariaLabelDesc="Activate to sort in descending order"
+                                            ariaLabelAsc="Activate to sort in ascending order">
+                                        </p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr id="{{rowData.UserGuid}}" (dblclick)="openUserCard(rowData, $event)"
+                                    [pSelectableRow]="rowData">
+
+                                    <td *ngFor="let col of columns" class="ui-resizable-column">
+
+                                        <span *ngIf="col.field === 'Status'">
+                                            <button pButton type="button"
+                                                [className]="rowData['Status'] === 'activate' ? 'ui-button-rounded ui-button-active' : 'ui-button-rounded ui-button-notactive'">
+                                            </button>
+                                        </span>
+
+                                        <span *ngIf="col.field !== 'Status' && col.field !== 'UpdateDate'">
+                                            {{rowData[col.field] }}
+                                        </span>
+
+                                        <span *ngIf="col.field === 'UpdateDate'">
+                                            {{rowData[col.field]  | customDate}}
+                                        </span>
+
+                                    </td>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="summary">
+                            </ng-template>
+
+
+                        </p-table>
+                    </div>
+                </div>
+
+                <!-- additionPermissions -->
+                <label class="page-label" style="padding-top: 15px;">{{'UserCard.AddPermissions' | translate}}</label>
+
+                <div id="additionPermissions" class="d-flex flex-row" style="height: calc(100% - 240px)">
+
+                    <!-- role -->
+                    <div class="col-5 page-inputgroup">
+                        <label class="page-label ">
+                            {{'UserCard.SystemRole' | translate}}
+                        </label>
+
+                        <div id="systemRole" style="width: 100%">
+
+                            <p-dropdown #pdd class="page-dropdown role-dropdown" placeholder="{{'UserCard.SelectRole' | translate}}"
+                                [options]="rolesItems" required=true [style]="{'width':'100%','overflow':'visible'}"
+                                [ngClass]="{ 'is-invalid': f.RoleId.errors }" [(ngModel)]="currentRoleId"
+                                (onChange)="selectRole($event)">
+                                <ng-template let-item pTemplate="selectedItem">
+                                    <div class="role-item">{{item.label}}</div>
+                                    <!-- highlighted selected item -->
+                                </ng-template>
+                                <ng-template let-item pTemplate="item">
+                                    <div class="role-item">{{item.label}}</div>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                    </div>
+
+                    <!-- org tree -->
+                    <div class="col-7 page-inputgroup">
+                        <label id="treeLabel" class="page-label d-flex flex-row col-12">
+                            <span class="page-label-key">{{'Common.UnitName' | translate}}</span>
+                            <span class="page-label-value"><strong>{{currentUnitName}}</strong></span>
+                        </label>
+
+                        <div id="treeDiv">
+                            <units-tree id="user-orgs-tree-card" [titleEnabled]="false" [searchEnabled]="true"
+                                [multipleSelection]="false" [startExpandAll]="true" [value]="currentUnit"
+                                [isValid]="!this.f.UnitGuid.invalid"
+                                (selectedChange)="onUnitsTreeSelectedChange($event)"
+                                (dataChange)="onUnitsTreeDataChange($event)">
+                            </units-tree>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-card-footer">
+        <button type="button" class="page-btn-footer" [disabled]="this.userForm.invalid"
+            label="{{'Common.Approval' | translate}}" pButton icon="pi pi-check" (click)="onSubmit()">
+        </button>
+        <button type="button" class="page-btn-footer" pButton icon="pi pi-sign-out"
+            label="{{'Common.Close' | translate}}" (click)="onClose()">
+        </button>
+    </div>
+</div>
+
+<p-toast class="page-toast" key="notify-user-card"></p-toast>

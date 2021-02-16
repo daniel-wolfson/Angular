@@ -1,0 +1,244 @@
+$permissions-input-color: rgb(219, 161, 0);
+$permissions-label-color: rgb(207, 207, 207);
+$permissions-background-color: rgb(73, 73, 73);
+
+.page-content {
+  height: calc(100% - 50px) !important;
+  padding: 0;
+}
+
+::ng-deep #userTableDiv {
+  height: 100%;
+
+  @media screen and (max-width: 1366px) {
+    /deep/.ui-table .ui-table-scrollable-body {
+      height: calc(100vh - 275px) !important;
+    }
+  }
+
+  #GlobalFilerUserInput {
+    width: auto;
+    background: black;
+    color: lightgray;
+    font-weight: bold;
+    font-family: heebo;
+  }
+
+  tr {
+    background-color: #21242b;
+    color: lightgray !important;
+    text-align: center;
+    font-weight: bold !important;
+    font-family: heebo !important;
+    border-bottom: solid 1px rgba(117, 95, 95, 0.4);
+  }
+  td {
+    border-bottom: solid 1px gray;
+    border: none;
+    span {
+      font-weight: bold !important;
+      font-family: heebo !important;
+    }
+  }
+  th {
+    text-align: center;
+    background: #21242b !important;
+    color: lightgray !important;
+    font-weight: bold !important;
+    font-family: heebo !important;
+    border-bottom: solid 2px gray;
+    border: none;
+  }
+
+ .ui-table {
+    height: calc(100% - 70px);
+    .ui-table-tbody > tr.ui-state-highlight {
+      background-color: #007ad9 !important;
+    }
+    .ui-table-caption,
+    .ui-table-summary {
+      display: none !important;
+    }
+    .ui-table-scrollable-wrapper,
+    .ui-table-scrollable-view {
+      height: 100%;
+    }
+    .ui-table-scrollable-body {
+      height: calc(100% - 50px) !important;
+      background-color: rgb(33, 36, 43);
+    }
+  }
+}
+
+.dataTable {
+  padding: 1rem 1rem 0 1rem;
+}
+
+.page-header-side {
+  background-color: orange !important;
+}
+
+.page-main-toolbar button {
+  margin-right: 10px;
+  border-radius: 2px;
+}
+
+.page-content-table {
+  padding: 0;
+  background-color: #333333;
+  border: 1px black solid;
+
+  .page-content-table-toolbar {
+    height: 40px;
+    border: 1px solid rgba(138, 138, 138, 0.192);
+  }
+}
+
+.tree-section {
+  height: 100%;
+  overflow: auto;
+  border: 1px solid white;
+}
+
+.role-item {
+  padding-right: 10px;
+  font-size: 0.9rem;
+}
+
+::ng-deep {
+  .ui-inputtext {
+    color: $permissions-label-color;
+  }
+
+  #permissions {
+    .ui-dropdown {
+      background-color: rgb(27, 31, 38);
+      .ui-dropdown-trigger {
+        background-color: rgb(27, 31, 38);
+      }
+      .ui-dropdown-panel {
+        .ui-dropdown-item {
+          background-color: rgb(27, 31, 38);
+          color: $permissions-input-color !important;
+        }
+      }
+      .ui-dropdown-items .ui-dropdown-item {
+        color: $permissions-input-color !important;
+      }
+      &:hover {
+        border: 1px solid white;
+      }
+    }
+
+    // .ui-table-scrollable-body { max-height: 30vh !important; }
+
+    .ui-table-scrollable-header-box {
+      margin-right: 0 !important;
+    }
+
+    .ui-button.ui-button-rounded {
+      border-radius: 5em !important;
+      margin-left: 0.3em;
+    }
+
+    .ui-button.ui-button-rounded.ui-button-active {
+      width: 1em;
+      height: 1em;
+      background: rgb(32, 211, 0);
+    }
+
+    .ui-button.ui-button-rounded.ui-button-notactive {
+      width: 1em;
+      height: 1em;
+      background: rgb(98, 98, 98);
+    }
+
+    .ui-dropdown-panel {
+      background-color: rgb(27, 31, 38);
+      color: lightgray !important;
+    }
+
+    .ui-dropdown .ui-inputtext,
+    .ui-dropdown .ui-dropdown-trigger-icon,
+    .ui-dropdown .ui-dropdown-trigger {
+      background-color: rgb(27, 31, 38);
+      color: lightgray !important;
+      font-weight: bold !important;
+      :hover {
+        border: orange;
+      }
+    }
+
+    .ui-dropdown {
+      width: 100%;
+    }
+
+    .ui-dialog {
+      box-shadow: 0px 0px 15px rgba(98, 98, 98, 0.6);
+    }
+
+    .page-confirm-dialog .ui-dialog .ui-dialog-content {
+      font-weight: bold !important;
+      font-size: 16px;
+      background-color: $permissions-background-color;
+      color: $permissions-input-color !important;
+    }
+
+    .page-confirm-dialog .ui-confirmdialog .ui-dialog-content .ui-confirmdialog-icon {
+      font-size: 2.5em;
+      margin-left: 0.5em;
+      position: relative;
+      top: 0.2em;
+    }
+
+    #permissions .ui-toolbar {
+      background-color: transparent;
+      border: none;
+      padding: 0.571em 1em;
+    }
+
+    #permissions .ui-toolbar {
+      button:hover {
+        box-shadow: 0px 0px 5px white;
+      }
+    }
+
+    .customProgress .ui-progressbar {
+      background: transparent;
+      padding: 0;
+      padding-top: 3px;
+    }
+
+    .customProgress .ui-progressbar .ui-progressbar-value {
+      background: rgba(0, 183, 255, 0.486);
+      padding-top: 3px;
+      margin: 0;
+    }
+
+    .ui-dropdown .ui-dropdown-label:focus {
+      border: 1px solid orange;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+      box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      -webkit-box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+      box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+    }
+
+    .page-container .ui-table-scrollable-view {
+      background-color: rgb(27, 31, 38);
+    }
+
+    .ui-table-scrollable-header-box {
+      padding-right: 0 !important;
+    }
+  }
+}

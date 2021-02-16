@@ -1,0 +1,229 @@
+@import "../../../assets/sass/_variables.scss";
+
+$user-card-border-color: rgb(206, 212, 218);
+$page-input-bg-color: rgba(0, 0, 0, 0.1);
+
+@font-face {
+  font-family: "password";
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://jsbin-user-assets.s3.amazonaws.com/rafaelcastrocouto/password.ttf);
+}
+
+::ng-deep .page-card {
+  .text-center {
+    button {
+      color: lightgray;
+      background-color: transparent;
+      border: none;
+      font-size: 0.9em;
+      font-family: heebo;
+      font-weight: bold;
+      float: left;
+    }
+  }
+  .ui-dialog-content {
+    overflow: hidden;
+  }
+
+  #additionPermissions {
+    #systemRole {
+      margin: 10px;
+      flex: 1;
+      height: 100px;
+      width: 100%;
+    }
+  }
+
+  #permissions {
+    height: 150px; 
+    max-height: 150px; 
+    background-color: #21242b;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+    &> div {
+      overflow-y: auto;
+    }
+
+    #GlobalFilerUserInput {
+      width: auto;
+      background: black;
+      color: lightgray;
+      font-weight: bold;
+      font-family: heebo;
+    }
+
+    tr {
+      background-color: #21242b;
+      color: lightgray !important;
+      text-align: center;
+      font-weight: bold !important;
+      font-family: heebo !important;
+      border-bottom: solid 1px gray;
+    }
+
+    td {
+      border-bottom: solid 1px gray;
+      border: none;
+
+      span {
+        font-weight: bold !important;
+        font-family: heebo !important;
+      }
+    }
+
+    th {
+      text-align: center;
+      background: #21242b !important;
+      color: lightgray !important;
+      font-weight: bold !important;
+      font-family: heebo !important;
+      border-bottom: solid 2px gray;
+      border: none;
+    }
+  }
+
+  #treeDiv {
+    height: calc(100% - 40px);
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  #treeLabel {
+    height: 28px;
+  }
+
+  .search-section {
+    padding-top: 5px;
+
+    .ui-inputgroup {
+      height: 32px;
+    }
+  }
+
+  .role-dropdown {
+    role-item {
+      font-weight: bold !important;
+      font-family: heebo !important;
+    }
+  }
+
+  .form-control:disabled {
+    background-color: transparent;
+    color: rgb(126, 126, 126);
+    border: 1px solid rgb(126, 126, 126);
+  }
+
+  .page-password {
+    // font-family: "password";
+    -webkit-text-security: disc;
+    width: 100px;
+  }
+
+  .page-password:focus {
+    -webkit-text-security: none !important;
+    // font-family: "Roboto";
+    width: 100px;
+  }
+
+  .page-content-title {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  .ui-table .ui-table-caption,
+  .ui-table .ui-table-summary {
+    background-color: transparent;
+  }
+
+  /deep/.ui-dropdown .ui-inputtext,
+  .ui-dropdown .ui-dropdown-trigger-icon,
+  .ui-dropdown .ui-dropdown-trigger {
+    background: transparent;
+    color: $page-input-color;
+    font-weight: bold;
+  }
+
+  /deep/.ui-dropdown {
+    background: transparent;
+    border: 1px solid #a6a6a6;
+    transition: border-color 0.2s;
+  }
+
+  /deep/.ui-dropdown-panel {
+    background: $page-input-bg-color;
+    color: white !important;
+  }
+
+  /deep/.ui-dropdown .ui-dropdown-trigger-icon {
+    color: white !important;
+  }
+
+  /deep/.ui-dialog .ui-dialog-content,
+  .ui-dialog .ui-dialog-titlebar,
+  .ui-dialog .ui-dialog-footer {
+    background-color: #262b35 !important;
+  }
+
+  .page-container.page-card {
+    height: calc(100vh - 290px);
+    @media screen and (max-width: 1366px) {
+      height: calc(100vh - 125px);
+    }
+  }
+
+  .page-content {
+    @media screen and (max-width: 1366px) {
+      height: calc(100% - 50px);
+    }
+  }
+
+  .page-row-inputgroup textarea,
+  .page-row-inputgroup input {
+    max-width: 220px;
+  }
+
+  .page-row-inputgroup .ui-progress-spinner {
+    position: absolute;
+    display: inline-block;
+    left: 5%;
+    top: 20%;
+    width: 15px;
+    height: 15px;
+  }
+
+  p-dropdown.ng-invalid:not(form) > div {
+    border: 1px solid #dc3545;
+  }
+
+  p-dropdown.ng-invalid.ng-touched.ui-inputwrapper-focus:not(form) > div {
+    box-shadow: 0 0 0 0.05em #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 2px;
+  }
+
+  p-dropdown.ng-invalid.ng-untouched.ui-inputwrapper-focus:not(form) > div {
+    box-shadow: 0 0 0 0.05em #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 2px;
+  }
+
+  p-dropdown.page-ddl-invalid {
+    color: red;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+    box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+    box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+  }
+}

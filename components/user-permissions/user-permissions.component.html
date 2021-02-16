@@ -1,0 +1,267 @@
+<div id="permissions" class="page-container flex-column">
+
+    <!-- main panel header -->
+    <div class="page-header">
+
+        <div class="col-4 page-header-side">
+            <label class="page-title">{{ 'UserPermissions.PageTitle' | translate }}</label>
+        </div>
+
+        <div class="col-8 page-header-main p-0 justify-content-start">
+            <!-- <p-toast class="page-toast" key="msg" [modal]="false"></p-toast> -->
+            <ul class="page-nav">
+                <li class="nav-item active">
+                    <a class="nav-link">
+                        {{ 'UserPermissions.TabUsersTitle' | translate }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="navigate('/units')">
+                        {{ 'UnitPermissions.TabUnitsTitle' | translate }}
+                    </a>
+                    <p-progressSpinner 
+                        [style.visibility]="(!isNavigationLoading) ? 'hidden' : 'visible' "
+                        strokeWidth="5" id="orgSpinner"
+                        [style]="{width: '12px', height: '12px'}">
+                    </p-progressSpinner>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- main panel body -->
+    <div class="page-content">
+
+        <!-- filter -->
+        <div class="col-4 page-col">
+
+            <!-- userid -->
+            <div class="page-inputgroup">
+                <label for="user-id">{{ 'Common.UserId' | translate }}</label>
+                <input id="user-id" type="text" pInputText style="width: 100%"
+                    (input)="dt.filter($event.target.value, 'UserId', 'contains')" />
+            </div>
+
+            <!-- firstname -->
+            <div class="page-inputgroup">
+                <label for="user-firstname">{{ 'Common.FirstName' | translate }}</label>
+                <input id="user-firstname" type="text" pInputText style="width: 100%"
+                    (input)="dt.filter($event.target.value, 'UserFirstName', 'contains')" />
+            </div>
+
+            <!-- lastname -->
+            <div class="page-inputgroup">
+                <label for="user-lastname">{{ 'Common.LastName' | translate }}</label>
+                <input id="user-lastname" type="text" pInputText style="width: 100%"
+                    (input)="dt.filter($event.target.value, 'UserLastName', 'contains')" />
+            </div>
+
+            <!-- org-tree-->
+            <div class="page-inputgroup page-section flex-grow-1">
+                <label for="user-orgs-tree">{{ 'Common.UnitName' | translate }}</label>
+                <div style="height: calc(100vh - 540px);">
+                    <units-tree id="user-orgs-tree-permissions" [titleEnabled]="false" [searchEnabled]="true"
+                        [isValid]="true" [multipleSelection]="true"
+                        (selectedChange)="onUnitsTreeSelectedChange(dt, $event)"
+                        (dataChange)="onUnitsTreeDataChange($event)">
+                    </units-tree>
+                </div>
+            </div>
+
+            <!-- system role -->
+            <div class="page-inputgroup">
+                <label for="role-name">{{ 'UserCard.SystemRole' | translate }}</label>
+                <div id="role-name" style="width: 100%">
+                    <p-dropdown #pdd placeholder="{{ 'UserCard.FilterSystemRole' | translate }}" class="role-dropdown"
+                        [ngStyle]="{'width':'100%','overflow':'visible'}" [(ngModel)]="selectedRole"
+                        [options]="rolesItems" (onChange)="filterDataTable(dt, 'RoleId', $event)">
+                        <ng-template let-item pTemplate="item">
+                            <div [ngStyle]="{'text-align':textAlignSide}" class="role-item">{{item.label}}</div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+            </div>
+
+            <!-- usertype"-->
+            <div class="page-inputgroup">
+                <label for="user-type">{{ 'UserCard.UserRole' | translate }}</label>
+                <div id="user-type" style="width: 100%">
+                    <p-dropdown placeholder="{{ 'UserCard.SelectUserRole' | translate }}"
+                        [ngStyle]="{'width':'100%','overflow':'visible'}" [(ngModel)]="selectedUserType"
+                        [options]="userTypesDisplayItems" (onChange)="filterDataTable(dt, 'UserType', $event)">
+                        <ng-template let-item pTemplate="item">
+                            <div [ngStyle]="{'text-align':textAlignSide}" class="role-item">{{item.label}}</div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+            </div>
+        </div>
+
+        <!-- user list -->
+        <div class="col-8 align-self-stretch p-0 h-100" style="background-color: #333333">
+
+            <div class="page-content-toolbar p-2 d-flex flex-row flex-wrap justify-content-center align-items-center">
+                <button class="ui-button-rounded" pButton type="button" icon="fas fa-user-plus"
+                    label="{{ 'UserPermissions.cmd_user_new' | translate }}" iconPos="{{currentTextAlign}}"
+                    (click)="createUser()">
+                </button>
+                <!-- [attr.disabled]="(!selectedUsers.length || (selectedUsers.length === 1 && currentUser && currentUser.UserStatus === 'activate')) ? true : null" -->
+                <button class="ui-button-rounded" pButton type="button" icon="fas fa-user-check"
+                    [attr.disabled]="!selectedUsers.length ? true : null"
+                    label="{{ 'UserPermissions.cmd_users_activate' | translate }}" iconPos="{{currentTextAlign}}"
+                    (click)="activateUsers()">
+                </button>
+                <!-- [attr.disabled]="(!selectedUsers.length || (selectedUsers.length === 1 &&currentUser && currentUser.UserStatus !== 'activate')) ? true : null" -->
+                <button class="ui-button-rounded" pButton type="button" icon="fas fa-user-slash"
+                    [attr.disabled]="!selectedUsers.length ? true : null"
+                    label="{{ 'UserPermissions.cmd_users_deactivate' | translate }}" iconPos="{{currentTextAlign}}"
+                    (click)="deactivateUsers()">
+                </button>
+                <button class="ui-button-rounded" pButton type="button" icon="fas fa-user-minus"
+                    [attr.disabled]="!selectedUsers.length ? true : null"
+                    label="{{ 'UserPermissions.cmd_users_delete' | translate }}" iconPos="{{currentTextAlign}}"
+                    (click)="deleteUsers()">
+                </button>
+                <button class="ui-button-rounded" pButton type="button" icon="fas fa-file-excel"
+                    [attr.disabled]="!selectedUsers.length ? true : null"
+                    label="{{ 'UserPermissions.cmd_export_excel' | translate }}" iconPos="{{currentTextAlign}}"
+                    (click)="exportToExel()">
+                </button>
+                <button class="ui-button-rounded" pButton type="button" icon="fas fa-envelope-square"
+                    [attr.disabled]="!selectedUsers.length ? true : null"
+                    label="{{ 'UserPermissions.cmd_sendemail' | translate }}" iconPos="{{currentTextAlign}}"
+                    (click)="sendEmails()">
+                </button>
+                <button class="ui-button-rounded" pButton type="button" icon="fas fa-envelope-square"
+                    label="{{ 'UserPermissions.ImportUsers' | translate }}" iconPos="{{currentTextAlign}}"
+                    (click)="GetCandidateByInterFace()">
+                </button>
+            </div>
+
+            <div class="page-content-progress">
+                <div *ngIf="!loading"></div>
+                <p-progressBar class="customProgress" *ngIf="loading" [value]="loadingPercent" mode="determinate"
+                    [style]="{height: '3px', margin: 0, padding: 0}">
+                </p-progressBar>
+            </div>
+
+            <!-- userList data body -->
+            <div id='userTableDiv' class="dataTable">
+                <p-table #dt dataKey="UserGuid" selectionMode="multiple" dir="{{currentDirection}}" [value]="usersData"
+                    scrollHeight="100%" scrollWidth="100%" [columns]="tableColumns" [(selection)]="selectedUsers"
+                    [resizableColumns]="true" [responsive]="true" [scrollable]="true" [loading]="undefined"
+                    (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+
+                    <ng-template pTemplate="caption">
+                        <!-- <div class="page-search-input" style="display: none;">
+                            <i class="fa fa-search"></i>
+                            <input id="GlobalFilerUserInput" type="text" pInputText size="50"
+                                placeholder="search"
+                                (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                style="width:auto">
+                        </div> -->
+                    </ng-template>
+
+                    <ng-template pTemplate="colgroup" let-columns>
+                        <colgroup>
+                            <col style="width:15%">
+                            <col style="width:0%">
+                            <col style="width:15%">
+                            <col style="width:15%">
+                            <col style="width:30%">
+                            <col style="width:15%">
+                            <col style="width:15%">
+                            <col style="width:15%">
+                            <col style="width:15%">
+
+                        </colgroup>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn>
+                                <span *ngIf="!['UnitGuid','UserName'].includes(col.field)">
+                                    <span *ngIf="col.field === 'UserMail'" [style.width.px]="130">
+                                        {{col.header}}
+                                    </span>
+
+                                    <span *ngIf="col.field !== 'UserMail'" [style.width.%]="15">
+                                        {{col.header}}
+                                    </span>
+
+                                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                        ariaLabelDesc="Activate to sort in descending order"
+                                        ariaLabelAsc="Activate to sort in ascending order">
+                                    </p-sortIcon>
+                                </span>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr id="userguid-{{rowData.UserGuid}}" (dblclick)="openUserCard(rowData, $event)"
+                            [pSelectableRow]="rowData">
+
+                            <td *ngFor="let col of columns" class="ui-resizable-column">
+
+                                <span *ngIf="col.field === 'UserStatus'">
+                                    <button pButton type="button"
+                                        [className]="rowData['UserStatus'] === 'activate' ? 'ui-button-rounded ui-button-active' : 'ui-button-rounded ui-button-notactive'">
+                                    </button>
+                                </span>
+
+                                <span
+                                    *ngIf="!['UserStatus','UserCreateDate','UnitGuid','UserName'].includes(col.field)">
+                                    {{rowData[col.field] }}
+                                </span>
+
+                                <span *ngIf="col.field === 'UserCreateDate'">
+                                    {{rowData[col.field] | customDate}}
+                                </span>
+
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="summary">
+                    </ng-template>
+
+                </p-table>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- confirmDialog -->
+<p-confirmDialog #cd class="page-confirm-dialog" icon="pi pi-exclamation-triangle">
+    <p-footer>
+        <button type="button" class="lf-btn-prompt lf-secondary-btn-md lf-footer-btn-space"
+            (click)="cd.accept()">{{'Common.Yes' | translate}}</button>
+        <button type="button" class="lf-btn-prompt lf-primary-btn-md" (click)="cd.reject()">{{'Common.No' | translate}}
+        </button>
+    </p-footer>
+</p-confirmDialog>
+
+<p-toast class="page-toast" key="msg" [modal]="false"></p-toast>
+
+<!-- confirmDialog temp -->
+<p-toast id="toastConfirm" position="center" [modal]="false" [baseZIndex]="5000" key="c">
+    <ng-template let-message pTemplate="message">
+        <div style="text-align: center">
+            <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+            <h3>{{message.summary}}</h3>
+            <p>{{message.detail}}</p>
+        </div>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-6">
+                <button type="button" pButton (click)="onConfirm()" label="Yes" class="ui-button-success"></button>
+            </div>
+            <div class="ui-g-6">
+                <button type="button" pButton (click)="onReject()" label="No" class="ui-button-secondary"></button>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>

@@ -1,0 +1,171 @@
+<div id="permissions" class="page-container flex-column">
+
+    <!-- main panel header -->
+    <div class="page-header">
+
+        <div class="col-4 page-header-side">
+            <label class="page-title">{{ 'UnitPermissions.PageTitle' | translate }}</label>
+        </div>
+
+        <div class="col-8 page-header-main p-0 justify-content-start">
+            <!-- <p-toast class="page-toast" key="msg" [modal]="false"></p-toast> -->
+            <ul class="page-nav">
+                <li class="nav-item">
+                    <a class="nav-link" (click)="navigate('/users')">
+                        {{ 'UserPermissions.TabUsersTitle' | translate }}
+                    </a>
+                    <p-progressSpinner [style.visibility]="(!isNavigationLoading) ? 'hidden' : 'visible' "
+                        strokeWidth="5" id="orgSpinner" [style]="{width: '12px', height: '12px'}">
+                    </p-progressSpinner>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link">
+                        {{ 'UnitPermissions.TabUnitsTitle' | translate }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- main panel body -->
+    <div class="page-content">
+
+        <!-- filter -->
+        <div class="col-4 page-col">
+
+            <!-- system role -->
+            <!-- <div class="page-inputgroup">
+                <label for="role-name">{{ 'UserCard.SystemRole' | translate }}</label>
+                <div id="role-name" style="width: 100%">
+                    <p-dropdown #pdd dataKey="value" placeholder="{{ 'UserCard.FilterSystemRole' | translate }}"
+                        class="role-dropdown" [ngStyle]="{'width':'100%','overflow':'visible'}"
+                        [(ngModel)]="selectedRoleId" [options]="rolesItems">
+                        <ng-template let-item pTemplate="item">
+                            <div [ngStyle]="{'text-align':textAlignSide}" class="role-item">{{item.label}}</div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+            </div> -->
+
+            <!-- org-tree-->
+            <div class="page-inputgroup page-section flex-grow-1">
+                    <label class="w-100" style="text-align: center;">{{ 'UnitPermissions.SelectOwnerUnit' | translate }}</label>
+                    <div style="height: calc(100% - 28px);" class="p-2">
+                        <units-tree id="owner-units-tree" [titleEnabled]="false" [value]="this.selectedOwnerUnit"
+                            [toolbarEnabled]="true" [searchEnabled]="true" [isValid]="true" [multipleSelection]="false"
+                            (selectedChange)="onOwnerUnitsTreeSelectedChange(dt, $event)">
+                        </units-tree>
+                    </div>
+            </div>
+
+        </div>
+
+        <!-- user list -->
+        <div class="col-8 align-self-stretch p-0 h-100" style="background-color: #333333">
+
+            <div class="page-content-toolbar p-2 d-flex flex-row flex-wrap justify-content-start align-items-center">
+                <button class="ui-button-rounded" pButton type="button" icon="fas fa-save"
+                    [disabled]="!this.saveEnabled" label="{{ 'UnitPermissions.cmd_save' | translate }}"
+                    (click)="save()">
+                </button>
+
+                <!-- [attr.disabled]="(!selectedUsers.length || (selectedUsers.length === 1 &&currentUser && currentUser.UserStatus !== 'activate')) ? true : null" -->
+            </div>
+
+            <div class="page-content-progress">
+                <div *ngIf="!loading"></div>
+                <p-progressBar class="customProgress" *ngIf="loading" [value]="loadingPercent" mode="determinate"
+                    [style]="{height: '3px', margin: 0, padding: 0}">
+                </p-progressBar>
+            </div>
+
+            <div class="row p-2 h-100">
+
+                <div class="col-6" style="height: calc(100% - 80px)">
+                    <label class="w-100" style="text-align: center;">{{ 'UnitPermissions.SelectionUnits' | translate }}</label>
+                    <units-tree id="selection-units-tree" [titleEnabled]="false" [toolbarEnabled]="true"
+                        [searchEnabled]="true" [isValid]="true" [multipleSelection]="true"
+                        [selectedItems]="selectedPermissionUnits"
+                        (selectedChange)="onPermissionUnitsTreeSelectedChange(dt, $event)">
+                    </units-tree>
+                </div>
+
+                <div id='unitTableDiv' class="col-6" style="height: calc(100% - 80px)">
+                    <label class="w-100" style="text-align: center;">{{ 'UnitPermissions.SelectedUnits' | translate }}</label>
+                    <div class="h-100 p-" style="border: 1px white solid; border-radius: 3px">
+                        <p-table #dt dataKey="guid" selectionMode="single" dir="{{currentDirection}}"
+                            [value]="selectedListUnits" scrollHeight="100%" scrollWidth="100%" [columns]="tableColumns"
+                            [resizableColumns]="true" [responsive]="true" [scrollable]="true" [loading]="undefined"
+                            (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+
+                            <ng-template pTemplate="header" let-columns>
+                                <!-- <tr>
+                                    <span *ngFor="let col of columns">
+                                        <th *ngIf="col.field === 'name'" pSortableColumn]="col.field" pResizableColumn>
+                                            {{col.header}}
+                                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                                                ariaLabelDesc="Activate to sort in descending order"
+                                                ariaLabelAsc="Activate to sort in ascending order">
+                                            </p-sortIcon>
+                                        </th>
+                                    </span>
+                                </tr> -->
+                            </ng-template>
+
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr id="userguid-{{rowData.guid}}" (dblclick)="searchSelectedGuid(rowData, $event)"
+                                    [pSelectableRow]="rowData" [style.width.%]="100">
+
+                                    <span *ngFor="let col of columns">
+                                        <td *ngIf="['name'].includes(col.field)" class="ui-resizable-column"
+                                            [style.width.%]="100">
+                                            {{rowData[col.field] }}
+                                        </td>
+                                    </span>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="summary">
+                            </ng-template>
+
+                        </p-table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- confirmDialog -->
+<p-confirmDialog #cd class="page-confirm-dialog" icon="pi pi-exclamation-triangle">
+    <p-footer>
+        <button type="button" class="lf-btn-prompt lf-secondary-btn-md lf-footer-btn-space"
+            (click)="cd.accept()">{{'Common.Yes' | translate}}</button>
+        <button type="button" class="lf-btn-prompt lf-primary-btn-md" (click)="cd.reject()">{{'Common.No' | translate}}
+        </button>
+    </p-footer>
+</p-confirmDialog>
+
+<p-toast class="page-toast" key="msg" [modal]="false"></p-toast>
+
+<!-- confirmDialog temp -->
+<p-toast id="toastConfirm" position="center" [modal]="false" [baseZIndex]="5000" key="c">
+    <ng-template let-message pTemplate="message">
+        <div style="text-align: center">
+            <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+            <h3>{{message.summary}}</h3>
+            <p>{{message.detail}}</p>
+        </div>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-6">
+                <button type="button" pButton (click)="onConfirm()" label="Yes" class="ui-button-success"></button>
+            </div>
+            <div class="ui-g-6">
+                <button type="button" pButton (click)="onReject()" label="No" class="ui-button-secondary"></button>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
