@@ -1,0 +1,45 @@
+<div id="loginDiv" class="container">
+  <div class="row">
+    <div id="LoginInnerDiv" class="col-md-4 col-md-offset-4">
+      <div class="panel panel-default"  style="border-radius: 5px; padding: 15px">
+        <div class="panel-heading">
+          <h5 class="panel-title" style="padding-bottom: 10px">{{'Login.PleaseEnterUserInformation' | translate}}</h5>
+        </div>
+        <div class="panel-body">
+          <form (ngSubmit)="onSubmit($event)">
+            <fieldset>
+              <div class="form-group">
+                <input class="form-control" placeholder="{{'Common.Username' | translate}}" [value]="userName" type="text" 
+                  (change)="userName=$event.target.value">
+              </div>
+              <div class="form-group">
+                <input class="form-control" placeholder="{{'Common.Password' | translate}}" [value]="password" type="password"
+                  (change)="password=$event.target.value">
+              </div>
+              <div class="form-group">
+                <label style="color:lightgrey">
+                  {{this.language === '1' ? 'Hebrew' :'English' }}
+                </label>
+                <!-- <select [disabled]="true"  class="ddl-lang" [(ngModel)]="this.language" [ngModelOptions]="{standalone: true}" (change)="ChangeLang($event.target.value)">
+                  <option value="1">Hebrew</option>
+                  <option value="2">English</option>
+                </select> -->
+              </div>
+              
+              <button id="btnSubmit" class="btn btn-lg btn-success btn-block" type="submit" >
+                <span class="submit-loading">
+                  <p-progressSpinner *ngIf="loading" strokeWidth="5" id="orgSpinner"
+                    [style]="{width: '23px', height: '23px','position':'absolute', 'left': '35%', 'padding-top': '1%'}">
+                  </p-progressSpinner>
+                </span>
+                <span id="btnSubmitContent">{{'Login.Login' | translate}}</span>
+              </button>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-toast class="page-toast-center"></p-toast>
