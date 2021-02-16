@@ -36,6 +36,7 @@ export class BaseService {
   public data: any;
   public treeData = new Subject();
   public MessagetreeData = new BehaviorSubject('tree');
+  public timeout : 7200000;
 
   currentMessage = this.MessagetreeData.asObservable();
 
@@ -47,7 +48,7 @@ export class BaseService {
 
   Post(url: string, _data: any) {
     try {
-      this.data = this.http.post<any>(url, { _data }, this._defaultHttpHeaders).timeout(7200000)
+      this.data = this.http.post<any>(url, { _data }, this._defaultHttpHeaders).timeout(this.timeout)
         .toPromise()
         .then(res => {
           res = <any[]>res;
@@ -63,7 +64,7 @@ export class BaseService {
 
   PostAsBlob(url: string, _data: any) {
     try {
-      this.data = this.http.post(url, _data, { responseType: 'blob' }).timeout(7200000).toPromise()
+      this.data = this.http.post(url, _data, { responseType: 'blob' }).timeout(this.timeout).toPromise()
       return this.data;
     }
     catch (err) {
