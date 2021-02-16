@@ -1,0 +1,156 @@
+$tree-border: 1px solid rgb(206, 212, 218);
+$tree-border-color-invalid: #dc1212;
+$tree-input-background-color: #21242b;
+
+.units-tree {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-self: stretch;
+  align-items: stretch;
+  border: $tree-border;
+  padding: 5px;
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: inherit;
+
+  .noborder {
+    border: none !important;
+  }
+
+  .is-invalid,
+  .invalid {
+    border-color: red;
+  }
+
+  .tree-section {
+    height: 100%;
+    overflow: auto;
+    border: 1px solid white;
+  }
+
+  .title-section {
+    height: 40px;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+
+  .toolbar-section {
+    height: auto;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .search-section {
+    .ui-inputgroup {
+      height: 30px;
+    }
+    input {
+      width: 100%;
+      height: 22px;
+      padding: 3px;
+      margin: 3px 3px 0px 3px;
+      border: none;
+      color: lightgray;
+      background-color: $tree-input-background-color;
+
+      border-bottom: 1px solid #31343a;
+      font-size: 0.9em;
+      font-family: heebo;
+      font-weight: bold;
+    }
+    button {
+      background-color: transparent !important;
+      border: none !important;
+      color: lightgray;
+      i {
+        font-size: 1.1rem;
+      }
+    }
+    .search-img {
+      color: whitesmoke;
+      font-size: 1.1rem;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+  }
+  mat-tree-node {
+    width: max-content;
+  }
+}
+
+::ng-deep body .units-tree .ui-button {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0;
+  color: lightgray !important;
+  font-weight: 500 !important;
+  font-family: heebo !important;
+  font-size: 1em;
+  outline: 1px;
+}
+
+::ng-deep body .units-tree .ui-toolbar {
+  padding: 0;
+  background-color: $tree-input-background-color;
+}
+
+::ng-deep body .ui-chkbox .ui-chkbox-box {
+  margin-top: 3px;
+  height: 18px;
+  width: 18px;
+  .ui-chkbox-icon {
+    font-size: 16px;
+  }
+}
+
+.searchMark {
+  background-color: #007ad9;
+}
+
+div.is-invalid,
+div.invalid {
+  border-color: red;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+  box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+  box-shadow: inset 0 0 6px rgba(216, 214, 214, 0.822);
+}
+
+@keyframes ui-progress-spinner-color {
+  100%,
+  0% {
+    stroke: white;
+  }
+  40% {
+    stroke: white;
+  }
+  66% {
+    stroke: white;
+  }
+  80%,
+  90% {
+    stroke: white;
+  }
+}
+
+::ng-deep body .tree-section .ui-chkbox-label {
+  // white-space: pre-wrap;
+  font-size: 1rem;
+}
+
+.active-node {
+  color: white;
+}

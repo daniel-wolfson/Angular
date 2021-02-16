@@ -1,0 +1,99 @@
+<!-- org-tree inputgroup-->
+<div class="units-tree" dir="{{dir}}" [attr.disabled]="disabled" [style.width.px]="width" [style.height]="height"
+    [style.min-height.px]="minHeight" [style.max-height.px]="maxHeight" [ngStyle]="styles"
+    [ngClass]="{ 'is-invalid': !isValid }">
+
+    <!-- toolbar -->
+    <section class="toolbar-section" *ngIf="toolbarEnabled">
+        <p-toolbar>
+            <div class="page-toolbar">
+                <button pButton type="button" id="btnCollapseAll" class="page-btn-toolbar"
+                    label="{{ 'UnitsTree.CollapseAll' | translate }}" icon="pi pi-minus"
+                    (click)="tree.treeControl.collapseAll()">
+                </button>
+                <button pButton type="button" id="btnExpandAll" class="page-btn-toolbar"
+                    label=" {{ 'UnitsTree.ExpandAll' | translate }}" icon="pi pi-plus"
+                    (click)="tree.treeControl.expandAll()">
+                </button>
+                <button pButton type="button" id="btnCleanSelect" class="page-btn-toolbar"
+                    label="{{ 'UnitsTree.CleanSelect' | translate }}" icon="fas fa-eraser"
+                    (click)="clearSelectedNodes()">
+                </button>
+            </div>
+        </p-toolbar>
+    </section>
+
+    <!-- org-tree-title -->
+    <section class="title-section" *ngIf="titleEnabled">
+        <label style="display: inline;">{{title}}</label>
+    </section>
+
+    <!-- org-tree-search -->
+    <section class="search-section" *ngIf="searchEnabled">
+        <div class="ui-inputgroup search-input">
+            <input type="text" pInputText placeholder="{{ 'UnitsTree.SearchPlaceholder' | translate }}"
+                (keydown)="gotoNextNode($event)" (input)="filterChanged($event.target.value)">
+            <button (click)="gotoNextNode($event)" type="button" label=""
+                style="background-color: transparent; border: none;">
+                <i class="fa fa-search fa-1x" aria-hidden="true">
+                </i>
+            </button>
+        </div>
+    </section>
+
+    <!-- org-tree-progress -->
+    <div *ngIf="!dataTreeLoaded" style="position: relative;">
+        <p-progressSpinner [style]="{width: '40px', height: '40px',
+        'position':'absolute', 'display': 'inline-block',  'left': '47%', 'padding-top': '30%'}" strokeWidth="5">
+        </p-progressSpinner>
+    </div>
+
+    <!-- org-tree-body-->
+    <section class="page-inputgroup tree-section" [style.height.%]="100"
+        style="border: none; overflow:auto; width: 100%;">
+
+        <div class="tree-section-body">
+            <mat-tree id="TreeOrg" #tree [dataSource]="dataSource" [treeControl]="treeControl"
+                style="overflow: hidden;" [style.height.%]="100">
+
+                <mat-tree-node id="{{node.guid}}" *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+                    <button mat-icon-button disabled></button>
+
+                    <mat-checkbox class="checklist-leaf-node" style="padding: 0 3px;"
+                        [checked]="this.checkListSelection.isSelected(node)"
+                        (change)="this.treeItemSelectionToggle(node)">
+                        <span (click)="activeNode = node" [ngClass]="{ 'active-node': activeNode === node }">
+                            {{node.name}}
+                        </span>
+                    </mat-checkbox>
+
+                    <!-- <p-checkbox binary="true" [style]="{'height':'25px', display: inline-block}"
+                        label="{{node.name}}" [ngModel]="checkListSelection.isSelected(node)"
+                        (click)="treeItemSelectionToggle(node);">
+                    </p-checkbox> -->
+                </mat-tree-node>
+
+                <mat-tree-node id="{{node.guid}}" *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding
+                    style="height: 26px">
+                    <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+                        <mat-icon class="mat-icon-rtl-mirror">
+                            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                        </mat-icon>
+                    </button>
+
+                    <!-- [indeterminate]="this.checkListSelection.isSelected(node)"  -->
+                    <mat-checkbox [checked]="checkListSelection.isSelected(node)"
+                        (change)="this.treeItemSelectionToggle(node)">
+                        <span (click)="activeNode = node" [ngClass]="{ 'active-node': activeNode === node }">
+                            {{node.name}}
+                        </span>
+                    </mat-checkbox>
+                    <!-- <p-checkbox binary="true" [style]="{'width':'30px', 'height':'25px', display: inline-block}"
+                        label="{{node.name}}" [ngModel]="checkListSelection.isSelected(node)"
+                        (onChange)="treeItemSelectionToggle(node);">
+                    </p-checkbox> -->
+                </mat-tree-node>
+            </mat-tree>
+        </div>
+    </section>
+</div>
