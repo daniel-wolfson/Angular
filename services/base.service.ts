@@ -74,7 +74,7 @@ export class BaseService {
   }
 
   Get(url: string) {
-    this.data = this.http.get<any>(url).timeout(7200000)
+    this.data = this.http.get<any>(url).timeout(this.timeout)
       .toPromise()
       .then(res => {
         res = <any[]>res;
@@ -85,7 +85,12 @@ export class BaseService {
   }
 
   async getAsync<TResult>(path: string) {
-    return await this.http.get<TResult>(path).timeout(7200000).toPromise()
+    return await this.http.get<TResult>(path)
+      .pipe(
+        catchError(this.handleError<TResult>('getAsync' + path, []))
+      )
+      .timeout(this.timeout)
+      .toPromise()
   }
 
   async getResultAsync<TResult>(path: string) {
@@ -109,6 +114,19 @@ export class BaseService {
     return results;
   }
 
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      this.log(`${operation} failed: ${error.message}`);
+
+      return of(result as T);
+    };
+  }
+
+  private log(message: string) {
+    console.log(message);
+  }
+  
   // ***************** cache begin *******************
   private static _cacheResults: Map<string, any> = new Map<string, any>();
   private _cacheMaxEntries: number = 100;
@@ -184,36 +202,6 @@ export class BaseService {
     return arr.join('_');
   }
   // ***************** cache end *******************
-
-  // ************* notifications begin *************
-  notifySuccess(key: any, message: string = undefined): Message {
-    return this.createNotifyMessage(key, true, 'success', message);
-  }
-  notifyError(key: any, message: string = undefined): Message {
-    return this.createNotifyMessage(key, false, 'error', message);
-  }
-  notifyInfo(key: any, message: string): Message {
-    return this.createNotifyMessage(key, 'info', message);
-  }
-  createNotifyMessage(key: any, result: any): Message;
-  createNotifyMessage(key: any, result: any, message: string): Message;
-  createNotifyMessage(key: any, severity: string, message: string): Message;
-  createNotifyMessage(key: any, result: any, severity: string, message: string): Message;
-  createNotifyMessage(key: any, result: any | undefined = undefined, severity: string = undefined, message: string = undefined): Message {
-
-    if (result !== undefined && result !== null && result && !severity) {
-      severity = this.validateResult(result) ? 'success' : 'error';
-    }
-
-    if (severity === 'success' && !message) message = Localizer.get("ToastMessage.ActionSuccess");
-    if (severity === 'error' && !message) message = Localizer.get("ToastMessage.ActionFailed");
-    if (severity === 'info' && !message) message = Localizer.get("ToastMessage.PleaseWait");
-
-    const _message = <Message>{ key: key, severity: severity, summary: '', detail: `${message}` };
-    return _message;
-    //this.messageService.add(_message);
-  }
-  // ************* notifications end *************
 
   // ************* helpers begin *************
   validateResult(result: any): boolean {
